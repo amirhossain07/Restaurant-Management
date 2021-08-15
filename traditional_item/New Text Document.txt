@@ -1,0 +1,48 @@
+function no : 3
+----------(user can create account in facebook by registration)--------
+
+<html> 
+<form name="Myform" id="regform" action="insert_core.php" method="post">
+                            <input type="text" name="username" id="username" placeholder="User Name" >
+                            <input type="email" name="email" id="emaill" placeholder="Email"  >
+                            <input type="password" name="password" id="passs" placeholder="Password"  >
+                            <input type="text" name="number" id="phone" placeholder="Phone Number" >
+                            <input type="submit" name="submit4" class="btn" value="Register" >
+                        </form>
+</html>
+
+
+
+---------(this is 'insert_core.php' page)-------------
+
+<?php
+session_start();
+
+
+require_once("connection.php");
+
+if(isset($_REQUEST["submit4"]))
+{
+    $username = $_REQUEST["username"];
+    $email = $_REQUEST["email"];
+    $password = $_REQUEST["password"];
+    $number = $_REQUEST["number"];
+   
+
+    $insertquery = "INSERT INTO traditionlogin(name,email,pass,phone)VALUES('$username','$email','$password',$number)";
+    $runisquery = mysqli_query($conn,$insertquery);
+
+    if($runisquery==true)
+    {
+        header ("location: account.php?action=true");
+    }
+    else 
+    {
+        header ("location: account.php?action=false");
+    }
+    
+}
+
+
+
+?>

@@ -1,0 +1,112 @@
+function no: 1
+user can send complain to the facebook
+
+<html>
+ <form action="dashboard_core.php" method="post" class="contact-form">
+          <div class="form-group">
+            <input type="text" name="username" class="form-control" placeholder="Your Name">
+          </div>
+          <div class="form-group">
+            <input type="number" name="number" class="form-control" placeholder="Phone No.">
+          </div>
+          <div class="form-group">
+            <input type="email" name="email" class="form-control" placeholder="Your Email">
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" name="msg" rows="4" placeholder="Write Message"></textarea>
+          </div>
+          <button type="submit" name="submit" class="btn btn-primary">SEND MESSAGE</button>
+        </form>
+
+</html>
+
+
+---(this is 'dashboard_core.php' page)---
+
+<?php
+
+require_once("connection.php");
+
+if(isset($_REQUEST["submit"]))
+{
+    $username = $_REQUEST["username"];
+    $number = $_REQUEST["number"];
+    $email = $_REQUEST["email"];
+    $msg = $_REQUEST["msg"];
+    
+
+    $insertquery = "INSERT INTO feedback(name,phone,email,msg)VALUES('$username','$number','$email','$msg')";
+    $runisquery = mysqli_query($conn,$insertquery);
+
+    if($runisquery==true)
+    {
+        header ("location: index.php?insert");
+    }
+    else 
+    {
+        header ("location: index.php?wrong");
+    }
+}
+
+
+
+
+?>
+
+---------(this is dashboard page...where complain msg will be shown)-------
+
+
+<div class="content">
+   <div class="tableform3">
+        <h1>Show Customer's Feedback</h1>
+        <a href="showfeedback.php" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">See List</a>
+   </div>
+</div>
+
+
+--------(this is showfeedback.php page)---------------
+
+
+ <div class="formtable">
+        <h1>The feedback of Customer's</h1>
+
+        
+
+    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+
+<table class="table table-bordered table-striped mb-0">
+  <thead>
+    <tr>
+      
+      <th scope="col">Name</th>
+      <th scope="col">Phone</th>
+      <th scope="col">Email</th>
+      <th scope="col">Message</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  <?php
+require_once("connection.php");
+
+
+$myquery = "SELECT * FROM feedback;";
+$run_query = mysqli_query($conn,$myquery);
+
+while($mydata = mysqli_fetch_array($run_query))
+{?>
+    <tr>
+    
+   <td><?php echo $mydata["name"]; ?> </td>
+   <td><?php echo $mydata["phone"]; ?> </td>
+   <td><?php echo $mydata["email"]; ?> </td>
+   <td><?php echo $mydata["msg"]; ?> </td>
+   <td> <a href="#?id=<?php echo $mydata["id"]; ?>" >Send Email</a>
+    </tr>
+<?php } ?>
+  </tbody>
+</table>
+
+</div>
+            
+    </div>
